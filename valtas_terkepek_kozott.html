@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css" />
+    <script src="node_modules\leaflet\dist\leaflet.js"></script>
+    <!-- 
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js"></script>
+    <link  href="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css"     rel="stylesheet"  />
+ -->
+    <style>
+      #mapid {
+        height: 600px;
+        background-color: antiquewhite;
+      }
+    
+    </style>
+    <title>Map</title>
+  </head>
+
+  <body>
+    <h3>Terkep megjelenites leaflet.js segitsegevel</h3>
+    <h5>Layer groups and Layers control</h5>
+
+    <!-- terkepet megjelenito div elem -->
+    <div id="mapid"> openstreetmap térkép</div>
+
+
+    <script>
+        /* ------------------------------- TERKEP LETREHOZASA A KOORDINATAK ES A NAGYITASI SZINT ALAPJAN --------------- */
+      /* terkep objectumot letrehozasa a megadott div elemen belul */
+      /* nezetet beallitja a megadott kordinatak es nagyitas alapjan */
+      var map = L.map("mapid", {
+        center: [46.840352333493655, 16.841280678103725],
+        zoom: 19,
+      });
+
+
+  /*  --------------------------- ALAP CSEMPE-RETEG KESZITES ÉS A TERKEPHEZ RENDELES ---------------------------------------*/
+  /* -----------------LEHETOSEGEK: UTCANEZET, MUHOLD NEZET, SOTET NEZET, VILAGOS NEZET, NAVIGACIOS NEZET  ------------------*/
+  /* -----------------LEHETOSEGEK: OPENSTREETMAP VAGY MAPBOX MEGJELENITES -----------------------------  ------------------*/
+      /* alap csempe-reteg, melyet hozzaadok a terkepemhez */
+      let streets = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {}
+      ).addTo(map);
+
+      /* alap csempe-reteg az openstreetmap-tol */
+      let streets2 = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        { }
+      )
+
+      /* alap csempe-reteg -muholdas nezet - a mapbox-tol */
+      let satellite2 = L.tileLayer(
+        "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
+        {
+          attribution:
+            'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          maxZoom: 18,
+          id: "mapbox/satellite-streets-v11",
+          tileSize: 512,
+          zoomOffset: -1,
+          accessToken:
+            "pk.eyJ1IjoiZGppZGppIiwiYSI6ImNrZWJxYzRjOTBiYzYyd3A4c3hpaWo5YWwifQ.ooGA5VwMGNu_vDgEP3y4lA",
+        }
+      )
+
+      /* alap csempe-reteg a mapbox-tol */
+      let sotet = L.tileLayer(
+        "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
+        {
+          attribution:
+            'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          maxZoom: 18,
+          id: "mapbox/dark-v10",
+          tileSize: 512,
+          zoomOffset: -1,
+          accessToken:
+            "pk.eyJ1IjoiZGppZGppIiwiYSI6ImNrZWJxYzRjOTBiYzYyd3A4c3hpaWo5YWwifQ.ooGA5VwMGNu_vDgEP3y4lA",
+        }
+      )
+
+      /* alap csempe-reteg a mapbox-tol */
+      let vilagos = L.tileLayer(
+        "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
+        {
+          attribution:
+            'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          maxZoom: 18,
+          id: "mapbox/light-v10",
+          tileSize: 512,
+          zoomOffset: -1,
+          accessToken:
+            "pk.eyJ1IjoiZGppZGppIiwiYSI6ImNrZWJxYzRjOTBiYzYyd3A4c3hpaWo5YWwifQ.ooGA5VwMGNu_vDgEP3y4lA",
+        }
+      )
+
+      /* alap csempe-reteg a mapbox-tol */
+      let muholdUtca = L.tileLayer(
+        "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
+        {
+          attribution:
+            'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          maxZoom: 18,
+          id: "mapbox/satellite-streets-v11",
+          tileSize: 512,
+          zoomOffset: -1,
+          accessToken:
+            "pk.eyJ1IjoiZGppZGppIiwiYSI6ImNrZWJxYzRjOTBiYzYyd3A4c3hpaWo5YWwifQ.ooGA5VwMGNu_vDgEP3y4lA",
+        }
+      )
+
+      /* alap csempe-reteg a mapbox-tol */
+      let nappaliNavigacio = L.tileLayer(
+        "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
+        {
+          attribution:
+            'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          maxZoom: 18,
+          id: "mapbox/navigation-day-v1",
+          tileSize: 512,
+          zoomOffset: -1,
+          accessToken:
+            "pk.eyJ1IjoiZGppZGppIiwiYSI6ImNrZWJxYzRjOTBiYzYyd3A4c3hpaWo5YWwifQ.ooGA5VwMGNu_vDgEP3y4lA",
+        }
+      )
+
+      /* alap csempe-reteg a mapbox-tol */
+      let ejszakaiNavigacio = L.tileLayer(
+        "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
+        {
+          attribution:
+            'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          maxZoom: 18,
+          id: "mapbox/navigation-night-v1",
+          tileSize: 512,
+          zoomOffset: -1,
+          accessToken:
+            "pk.eyJ1IjoiZGppZGppIiwiYSI6ImNrZWJxYzRjOTBiYzYyd3A4c3hpaWo5YWwifQ.ooGA5VwMGNu_vDgEP3y4lA",
+        }
+      )
+      /* alap csempe-reteg a mapbox-tol */
+      let kulteri = L.tileLayer(
+        "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
+        {
+          attribution:
+            'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          maxZoom: 18,
+          id: "mapbox/outdoors-v11",
+          tileSize: 512,
+          zoomOffset: -1,
+          accessToken:
+            "pk.eyJ1IjoiZGppZGppIiwiYSI6ImNrZWJxYzRjOTBiYzYyd3A4c3hpaWo5YWwifQ.ooGA5VwMGNu_vDgEP3y4lA",
+        }
+      )
+
+      /* KIEGESZITO CSEMPE-RETEGEK HOZZADASA, MELYEKBOL AKARMENNYI KI/BE KAPCSOLHATO EGY-EGY TERKEPEN */
+      /* kiegeszito csempe-reteg - MARKER - hozzaadasa, szoveggel, azonnali felugro ablakkal */
+     let marker = L.marker([46.84, 16.84])
+        .addTo(map)
+        .bindPopup(" popup.<br> Easily customizable. <br> Akár több sorban")
+        .openPopup();
+
+
+    /* KIEGESZITO CSEMPE-RETEGEK HOZZADASA, MELYEKBOL AKARMENNYI KI/BE KAPCSOLHATO EGY-EGY TERKEPEN */
+      /* kiegeszito csempe-reteg - MARKER - hozzaadasa, szoveggel, azonnali felugro ablakkal */
+     let marker2 = L.marker([46.842, 16.84])
+        .addTo(map)
+        .bindPopup(" popup.<br> Easily customizable. <br> Akár több sorban")
+        .openPopup();
+
+
+        /* a hasznalni kivant retegek csoportba rendezese */
+let baseLayers = {
+  "Streets": streets,
+  "muholdUtca térkép": muholdUtca,
+  "sötét": sotet,
+  "világos": vilagos
+};
+let megjeloltHelyek = {
+  "Mikros helyek": marker,
+  "Optikai helyek": marker2,
+
+   
+};
+
+/* retegcsoportok hozzaadasa a terkephez - a retegcsoportok ki/be kapcsolhatoak */
+L.control.layers(baseLayers, megjeloltHelyek).addTo(map);
+
+    </script>
+  </body>
+</html>

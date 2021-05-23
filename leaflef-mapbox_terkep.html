@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css" />
+    <script src="node_modules\leaflet\dist\leaflet.js"></script>
+    <!-- 
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js"></script>
+    <link  href="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css"     rel="stylesheet"  />
+ -->
+    <style>
+      #mapid {
+        height: 200px;
+        background-color: antiquewhite;
+      }
+      #mapid2 {
+        height: 200px;
+        background-color: rgb(106, 124, 148);
+      }
+      #mapid3 {
+        height: 200px;
+        background-color: rgb(144, 202, 78);
+      }
+      #mapid4 {
+        height: 200px;
+        background-color: rgb(144, 202, 78);
+      }
+      #mapid5 {
+        height: 200px;
+        background-color: rgb(144, 202, 78);
+      }
+      #mapid6 {
+        height: 200px;
+        background-color: rgb(144, 202, 78);
+      }
+      #mapid7 {
+        height: 200px;
+        background-color: rgb(144, 202, 78);
+      }
+      #mapid8 {
+        height: 200px;
+        background-color: rgb(144, 202, 78);
+      }
+      #mapid9 {
+        height: 200px;
+        background-color: rgb(144, 202, 78);
+      }
+    </style>
+    <title>Map</title>
+  </head>
+
+  <body>
+    <h3>Terkep megjelenites leaflet.js segitsegevel</h3>
+    <h5>Layer groups and Layers control</h5>
+
+    <!-- terkepet megjelenito div elem -->
+    <div id="mapid"> openstreetmap térkép</div>
+    <div id="mapid2">openstreetmap térkép POPUP reteggel</div>
+    <div id="mapid3">mapbox muhold terkeppel</div>
+    <div id="mapid4">mapbox muhold sotet térkép</div>
+    <div id="mapid5">mapbox muhold vilagos térkép</div>
+    <div id="mapid6">térkép</div>
+    <div id="mapid7">térkép</div>
+    <div id="mapid8">térkép</div>
+    <div id="mapid9">térkép</div>
+
+    <script>
+        /* ------------------------------- TERKEP LETREHOZASA A KOORDINATAK ES A NAGYITASI SZINT ALAPJAN --------------- */
+      /* terkep objectumot letrehozasa a megadott div elemen belul */
+      /* nezetet beallitja a megadott kordinatak es nagyitas alapjan */
+      var map = L.map("mapid", {
+        center: [46.840352333493655, 16.841280678103725],
+        zoom: 19,
+      });
+
+      /* a terkephez hozzaadom az nezetet  - egyszerre csak egy lesz lathato */
+      var map2 = L.map("mapid2", {
+        center: [46.840352333493655, 16.841280678103725],
+        zoom: 21,
+      });
+
+      /* a terkephez hozzaadom az nezetet  - egyszerre csak egy lesz lathato */
+      var map3 = L.map("mapid3", {
+        center: [46.840352333493655, 16.841280678103725],
+        zoom: 21,
+      });
+      /* a terkephez hozzaadom az nezetet  - egyszerre csak egy lesz lathato */
+      var map4 = L.map("mapid4", {
+        center: [46.840352333493655, 16.841280678103725],
+        zoom: 21,
+      });
+      /* a terkephez hozzaadom az nezetet  - egyszerre csak egy lesz lathato */
+      var map5 = L.map("mapid5", {
+        center: [46.840352333493655, 16.841280678103725],
+        zoom: 21,
+      });
+      /* a terkephez hozzaadom az nezetet  - egyszerre csak egy lesz lathato */
+      var map6 = L.map("mapid6", {
+        center: [46.840352333493655, 16.841280678103725],
+        zoom: 21,
+      });
+      /* a terkephez hozzaadom az nezetet  - egyszerre csak egy lesz lathato */
+      var map7 = L.map("mapid7", {
+        center: [46.840352333493655, 16.841280678103725],
+        zoom: 21,
+      });
+      /* a terkephez hozzaadom az nezetet  - egyszerre csak egy lesz lathato */
+      var map8 = L.map("mapid8", {
+        center: [46.840352333493655, 16.841280678103725],
+        zoom: 21,
+      });
+      /* a terkephez hozzaadom az nezetet  - egyszerre csak egy lesz lathato */
+      var map9 = L.map("mapid9", {
+        center: [46.840352333493655, 16.841280678103725],
+        zoom: 21,
+      });
+
+  /*  --------------------------- ALAP CSEMPE-RETEG KESZITES ÉS A TERKEPHEZ RENDELES ---------------------------------------*/
+  /* -----------------LEHETOSEGEK: UTCANEZET, MUHOLD NEZET, SOTET NEZET, VILAGOS NEZET, NAVIGACIOS NEZET  ------------------*/
+  /* -----------------LEHETOSEGEK: OPENSTREETMAP VAGY MAPBOX MEGJELENITES -----------------------------  ------------------*/
+      /* alap csempe-reteg, melyet hozzaadok a terkepemhez */
+      let streets = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {}
+      ).addTo(map);
+
+      /* alap csempe-reteg az openstreetmap-tol, melyet hozzaadok a terkepemhze */
+      let streets2 = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        { }
+      ).addTo(map2);
+
+      /* alap csempe-reteg -muholdas nezet - a mapbox-tol, melyet hozzaadok a terkepemhze */
+      let satellite2 = L.tileLayer(
+        "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
+        {
+          attribution:
+            'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          maxZoom: 18,
+          id: "mapbox/satellite-streets-v11",
+          tileSize: 512,
+          zoomOffset: -1,
+          accessToken:
+            "pk.eyJ1IjoiZGppZGppIiwiYSI6ImNrZWJxYzRjOTBiYzYyd3A4c3hpaWo5YWwifQ.ooGA5VwMGNu_vDgEP3y4lA",
+        }
+      ).addTo(map3);
+
+      /* alap csempe-reteg a mapbox-tol, melyet hozzaadok a terkepemhze */
+      let sotet = L.tileLayer(
+        "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
+        {
+          attribution:
+            'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          maxZoom: 18,
+          id: "mapbox/dark-v10",
+          tileSize: 512,
+          zoomOffset: -1,
+          accessToken:
+            "pk.eyJ1IjoiZGppZGppIiwiYSI6ImNrZWJxYzRjOTBiYzYyd3A4c3hpaWo5YWwifQ.ooGA5VwMGNu_vDgEP3y4lA",
+        }
+      ).addTo(map4);
+
+      /* alap csempe-reteg a mapbox-tol, melyet hozzaadok a terkepemhze */
+      let vilagos = L.tileLayer(
+        "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
+        {
+          attribution:
+            'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          maxZoom: 18,
+          id: "mapbox/light-v10",
+          tileSize: 512,
+          zoomOffset: -1,
+          accessToken:
+            "pk.eyJ1IjoiZGppZGppIiwiYSI6ImNrZWJxYzRjOTBiYzYyd3A4c3hpaWo5YWwifQ.ooGA5VwMGNu_vDgEP3y4lA",
+        }
+      ).addTo(map5);
+
+      /* alap csempe-reteg a mapbox-tol, melyet hozzaadok a terkepemhze */
+      let muholdUtca = L.tileLayer(
+        "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
+        {
+          attribution:
+            'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          maxZoom: 18,
+          id: "mapbox/satellite-streets-v11",
+          tileSize: 512,
+          zoomOffset: -1,
+          accessToken:
+            "pk.eyJ1IjoiZGppZGppIiwiYSI6ImNrZWJxYzRjOTBiYzYyd3A4c3hpaWo5YWwifQ.ooGA5VwMGNu_vDgEP3y4lA",
+        }
+      ).addTo(map6);
+
+      /* alap csempe-reteg a mapbox-tol, melyet hozzaadok a terkepemhze */
+      let nappaliNavigacio = L.tileLayer(
+        "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
+        {
+          attribution:
+            'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          maxZoom: 18,
+          id: "mapbox/navigation-day-v1",
+          tileSize: 512,
+          zoomOffset: -1,
+          accessToken:
+            "pk.eyJ1IjoiZGppZGppIiwiYSI6ImNrZWJxYzRjOTBiYzYyd3A4c3hpaWo5YWwifQ.ooGA5VwMGNu_vDgEP3y4lA",
+        }
+      ).addTo(map7);
+
+      /* alap csempe-reteg a mapbox-tol, melyet hozzaadok a terkepemhze */
+      let ejszakaiNavigacio = L.tileLayer(
+        "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
+        {
+          attribution:
+            'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          maxZoom: 18,
+          id: "mapbox/navigation-night-v1",
+          tileSize: 512,
+          zoomOffset: -1,
+          accessToken:
+            "pk.eyJ1IjoiZGppZGppIiwiYSI6ImNrZWJxYzRjOTBiYzYyd3A4c3hpaWo5YWwifQ.ooGA5VwMGNu_vDgEP3y4lA",
+        }
+      ).addTo(map8);
+
+      /* alap csempe-reteg a mapbox-tol, melyet hozzaadok a terkepemhze */
+      let kulteri = L.tileLayer(
+        "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
+        {
+          attribution:
+            'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          maxZoom: 18,
+          id: "mapbox/outdoors-v11",
+          tileSize: 512,
+          zoomOffset: -1,
+          accessToken:
+            "pk.eyJ1IjoiZGppZGppIiwiYSI6ImNrZWJxYzRjOTBiYzYyd3A4c3hpaWo5YWwifQ.ooGA5VwMGNu_vDgEP3y4lA",
+        }
+      ).addTo(map9);
+
+      /* KIEGESZITO CSEMPE-RETEGEK HOZZADASA, MELYEKBOL AKARMENNYI KI/BE KAPCSOLHATO EGY-EGY TERKEPEN */
+      /* kiegeszito csempe-reteg - MARKER - hozzaadasa, szoveggel, azonnali felugro ablakkal */
+     let marker = L.marker([46.84, 16.84])
+        .addTo(map2)
+        .bindPopup(" popup.<br> Easily customizable. <br> Akár több sorban")
+        .openPopup();
+
+      /* ZOOM-Control reteg vezerlo letrehozasa,hozzaadasa */
+        L.control.zoom(pozition = 'buttomright').addTo(map2);
+
+        /* a hasznalni kivant retegek csoportba rendezese */
+let baseLayers = {
+  "Streets": streets,
+  "Streets2": streets2,
+  "Satellite2 térkép": satellite2,
+  "muholdUtca térkép": muholdUtca,
+  "sötét": sotet,
+  "világos": vilagos
+};
+let jeloloPont = {
+  "Megjelolt helyek": marker,
+  "világos": vilagos
+   
+};
+
+/* retegcsoportok hozzaadasa a terkephez - a retegcsoportok ki/be kapcsolhatoak */
+L.control.layers(baseLayers, jeloloPont).addTo(map3);
+
+    </script>
+  </body>
+</html>
