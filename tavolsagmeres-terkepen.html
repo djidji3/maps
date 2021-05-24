@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css" />
+    <script src="node_modules\leaflet\dist\leaflet.js"></script>
+    <!-- 
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js"></script>
+    <link  href="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css"     rel="stylesheet"  />
+ -->
+    <style>
+      #mapid {
+        height: 600px;
+        background-color: antiquewhite;
+      }
+    </style>
+    <title>Map</title>
+  </head>
+
+  <body>
+    <h3>Terkep megjelenites leaflet.js segitsegevel</h3>
+    <h5>Layer groups and Layers control</h5>
+
+    <!-- terkepet megjelenito div elem -->
+    <div id="mapid">openstreetmap térkép</div>
+    <p>
+      To test, just click two times to draw a line. Distance and length will be
+      calculate between the two points.
+    </p>
+
+    <div id="map" style="height: 300px"></div>
+
+    <p>Length (in meters): <span id="length"></span></p>
+    <script>
+      let _firstLatLng,
+        _firstPoint,
+        _secondLatLng,
+        _secondPoint,
+        _distance,
+        _length,
+        _polyline;
+      _map = L.map("mapid").setView([46.840352333493655, 16.841280678103725], 15);
+
+      L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(_map);
+
+      // add listeners to click, for recording two points
+      _map.on("click", function (e) {
+        if (!_firstLatLng) {
+          _firstLatLng = e.latlng;
+         
+          L.marker(_firstLatLng)
+            .addTo(_map)
+            .bindPopup("Point A<br/>" + e.latlng)
+            .openPopup();
+        } else {
+          _secondLatLng = e.latlng;
+         
+          L.marker(_secondLatLng)
+            .addTo(_map)
+            .bindPopup("Point B<br/>" + e.latlng)
+            .openPopup();
+        }
+
+        if (_firstLatLng && _secondLatLng) {
+          // draw the line between points
+          L.polyline([_firstLatLng, _secondLatLng], {
+            color: "red",
+          }).addTo(_map);
+
+          refreshDistanceAndLength();
+        }
+      });
+
+      _map.on("zoomend", function (e) {
+        refreshDistanceAndLength();
+      });
+
+      function refreshDistanceAndLength() {
+        _length = L.GeometryUtil.length([_firstPoint, _secondPoint]);
+       
+        document.getElementById("length").innerHTML = _length;
+      }
+    </script>
+  </body>
+</html>
